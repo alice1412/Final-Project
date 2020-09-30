@@ -35,7 +35,6 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8081',
-    'http://10.10.4.250:8081/',
     'http://127.0.0.1:8080',
 )
 
