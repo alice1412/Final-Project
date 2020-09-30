@@ -36,7 +36,7 @@
         </form>
         <p>
           No account yet?
-          <router-link :to="{ name: 'Register' }">Register Now!</router-link>
+          <router-link :to="{ name: 'register' }">Register Now!</router-link>
         </p>
       </div>
     </div>

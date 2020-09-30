@@ -5,39 +5,55 @@ import { getAPI } from './axios-api'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-     accessToken: null,
-     refreshToken: null,
-     APIData: ''
+    accessToken: null,
+    refreshToken: null,
+    APIData: ''
   },
   mutations: {
-    updateStorage (state, { access, refresh }) {
+    updateStorage(state, { access, refresh }) {
       state.accessToken = access
       state.refreshToken = refresh
     },
-    destroyToken (state) {
+    destroyToken(state) {
       state.accessToken = null
       state.refreshToken = null
     }
   },
   getters: {
-    loggedIn (state) {
+    loggedIn(state) {
       return state.accessToken != null
     }
   },
   actions: {
-    userLogout (context) {
+    userLogout(context) {
       if (context.getters.loggedIn) {
-          context.commit('destroyToken')
+        context.commit('destroyToken')
       }
     },
-    userLogin (context, usercredentials) {
+    userLogin(context, usercredentials) {
       return new Promise((resolve, reject) => {
         getAPI.post('/api-token/', {
           username: usercredentials.username,
           password: usercredentials.password
         })
           .then(response => {
-            context.commit('updateStorage', { access: response.data.access, refresh: response.data.refresh }) 
+            context.commit('updateStorage', { access: response.data.access, refresh: response.data.refresh })
+            resolve()
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    userRegister(context, usercredentials) {
+      return new Promise((resolve, reject) => {
+        getAPI.post('/api-token/', {
+          username: usercredentials.username,
+          email: usercredentials.email,
+          password: usercredentials.password
+        })
+          .then(response => {
+            context.commit('updateStorage', { access: response.data.access, refresh: response.data.refresh })
             resolve()
           })
           .catch(err => {

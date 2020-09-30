@@ -1,21 +1,33 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div class="nav"></div>
+    <router-view />
+    <div
+      class="row bg-light d-flex justify-content-center align-items-center text-center pt-3 fixed-bottom"
+      id="footer"
+    >
+      <p>Copyright &copy; 2020 KeyInMind</p>
+    </div>
   </div>
 </template>
 
 <script>
-
-
 export default {
-  name: 'App',
-}
+  name: "App",
+};
 </script>
 
 <style>
-  body {
-    margin: 0;
-    padding: 0;
-    background-color:#f8f8f8!important;
-  }
+#app {
+  outline: none;
+  width: 100vw;
+  font-family: "Comfortaa", "Noto Serif TC", Avenir, Helvetica, Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  background: #f3f1ee;
+  transition: 0.2s;
+}
 </style>
