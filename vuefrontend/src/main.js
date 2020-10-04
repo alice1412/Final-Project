@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './routes.js'
-import store from './store'
+// import store from './store'
+import store from '../../vuefrontend/src/store/index'
 import IdleVue from 'idle-vue'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
