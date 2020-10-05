@@ -4,6 +4,13 @@ from corsheaders.defaults import default_headers
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+PAR_DIR = os.path.abspath("..")
+TEMPLATE_DIR = os.path.join(PAR_DIR,'vuefrontend/dist')
+STATIC_DIR = os.path.join(PAR_DIR,'vuefrontend/dist/static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')
+MEDIA_URL = '/upload/'
+
 SECRET_KEY = 'o_b*cq5*3^+6$jhhvy9jo=&&ogzg8bm4i-yidc4fp0t9)^luqp'
 
 DEBUG = True
@@ -17,7 +24,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apiapp',
+    'rest_framework',
+    # 'apiapp',
+    'mindmap',
+    'user',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
 ]
@@ -35,7 +45,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8081',
-    'http://10.10.4.250:8081/',
+    # 'http://10.10.4.250:8081/',
     'http://127.0.0.1:8080',
 )
 
@@ -48,7 +58,7 @@ ROOT_URLCONF = 'mainapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -97,5 +107,10 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+   'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser'
+   ),
 }
