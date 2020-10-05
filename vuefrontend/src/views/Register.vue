@@ -12,7 +12,7 @@
               name="username"
               id="username"
               class="form-control"
-              v-model="form.username"
+              v-model="username"
               required
             />
           </div>
@@ -23,7 +23,7 @@
               name="email"
               id="email"
               class="form-control"
-              v-model="form.email"
+              v-model="email"
               required
             />
           </div>
@@ -34,7 +34,7 @@
               name="password"
               id="password"
               class="form-control"
-              v-model="form.password"
+              v-model="password"
               required
             />
           </div>
@@ -44,7 +44,7 @@
               type="password"
               id="pwd-confirm"
               class="form-control"
-              v-model="form.confirm"
+              v-model="confirm"
               required
             />
           </div>
@@ -87,6 +87,23 @@ export default {
     },
     SubmitHandler(evt) {
       evt.preventDefault();
+      if (this.password != this.confirm) {
+        alert("Please check your password before you submit");
+      } else {
+        this.$store
+          .dispatch("userRegister", {
+            username: this.username,
+            email: this.email,
+            password: this.password,
+          })
+          .then(() => {
+            this.$router.push({ name: "login" });
+          })
+          .catch((err) => {
+            console.log(err);
+            this.incorrectAuth = true;
+          });
+      }
       //   let csrftoken = Cookies.get("csrftoken");
       //   let axiosConfig = {
       //     headers: {
@@ -96,35 +113,35 @@ export default {
       //       // Authorization: localStorage.getItem("jwtToken"),
       //     },
       //   };
-      let postData = {
-        username: this.username,
-        email: this.email,
-        password: this.password,
-      };
+      // let postData = {
+      //   username: this.username,
+      //   email: this.email,
+      //   password: this.password,
+      // };
 
-      const myFormData = new FormData();
-      myFormData.append("postData", JSON.stringify(postData));
+      // const myFormData = new FormData();
+      // myFormData.append("postData", JSON.stringify(postData));
 
-      if (this.password != this.confirm) {
-        alert("Please check your password before you submit");
-      } else {
-        alert("Successfully registered!");
-        this.$axios
-          .post("http://127.0.0.1:8000/api/users/", myFormData)
-          .then((res) => {
-            console.log(res);
-            (this.username = ""),
-              (this.email = ""),
-              (this.password = ""),
-              (this.confirm = "");
-            this.$router.push("/login");
-            console.log(res);
-          })
-          .catch((error) => {
-            console.log(error);
-            console.log(error.response.request._response);
-          });
-      }
+      // if (this.password != this.confirm) {
+      //   alert("Please check your password before you submit");
+      // } else {
+      //   alert("Successfully registered!");
+      //   this.$axios
+      //     .post("http://127.0.0.1:8000/api/users/", myFormData)
+      //     .then((res) => {
+      //       console.log(res);
+      //       (this.username = ""),
+      //         (this.email = ""),
+      //         (this.password = ""),
+      //         (this.confirm = "");
+      //       this.$router.push("/login");
+      //       console.log(res);
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //       console.log(error.response.request._response);
+      //     });
+      // }
     },
   },
 };

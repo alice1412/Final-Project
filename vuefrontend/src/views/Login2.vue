@@ -75,7 +75,7 @@ export default {
           password: this.password,
         })
         .then(() => {
-          this.$router.push({ name: "posts" });
+          this.$router.push({ name: "convert" });
         })
         .catch((err) => {
           console.log(err);

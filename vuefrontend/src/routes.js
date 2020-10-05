@@ -5,6 +5,8 @@ import Posts from './views/Posts'
 import Login from './views/Login2'
 import Logout from './views/Logout'
 import Register from './views/Register'
+import Convert from './views/Convert'
+import Settings from './views/Settings'
 
 Vue.use(VueRouter)
 
@@ -26,6 +28,14 @@ export default new VueRouter({
             }
         },
         {
+            path: '/convert',
+            name: 'convert',
+            component: Convert,
+            meta: {
+                requiresLogin: true
+            }
+        },
+        {
             path: '/login',
             name: 'login',
             component: Login,
@@ -39,6 +49,25 @@ export default new VueRouter({
             path: '/register',
             name: 'register',
             component: Register,
+        },
+        {
+            path: '/settings',
+            name: 'settings',
+            component: Settings,
+        },
+        // {
+        //     path: "/mindmap",
+        //     name: "MindMap",
+        //     component: () => import("../views/MindMap.vue"),
+        // },
+        // {
+        //     path: "/mmedit/:index",
+        //     name: "MMEdit",
+        //     component: () => import("../views/MMEdit.vue"),
+        // },
+        {
+            path: '*',
+            redirect: "/"
         },
     ]
 })
