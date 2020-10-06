@@ -36,7 +36,7 @@
         </form>
         <p>
           No account yet?
-          <router-link :to="{ name: 'Register' }">Register Now!</router-link>
+          <router-link :to="{ name: 'register' }">Register Now!</router-link>
         </p>
       </div>
     </div>
@@ -75,7 +75,7 @@ export default {
           password: this.password,
         })
         .then(() => {
-          this.$router.push({ name: "posts" });
+          this.$router.push({ name: "convert" });
         })
         .catch((err) => {
           console.log(err);
