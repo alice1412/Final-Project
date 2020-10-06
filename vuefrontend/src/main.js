@@ -15,9 +15,12 @@ Vue.use(IconsPlugin);
 const VueScrollTo = require("vue-scrollto");
 Vue.use(VueScrollTo);
 Vue.config.productionTip = false;
+
 // import 'jsmind'
-import jm from "vue-jsmind";
-Vue.use(jm);
+import jm from '../dist/build'
+Vue.use(jm)
+// import jm from "vue-jsmind";
+// Vue.use(jm);
 
 const eventsHub = new Vue()
 

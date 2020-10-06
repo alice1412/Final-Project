@@ -60,8 +60,8 @@
 
 <script>
 // @ is an alias to /src
-// import { mapActions, mapState } from "vuex";
 import NavBar from "@/components/Navbar-Top-After/index.vue";
+import Cookies from "js-cookie";
 
 export default {
   name: "Register",
@@ -86,21 +86,43 @@ export default {
     },
     SubmitHandler(evt) {
       evt.preventDefault();
+      //   -----封裝將傳出的資料-----
+      let csrftoken = Cookies.get("csrftoken");
+      let axiosConfig = {
+        headers: {
+          "X-CSRFToken": csrftoken,
+          "content-type": "multipart/form-data",
+        },
+      };
+      // "content-type": "application/x-www-form-urlencoded",
+      // Authorization: localStorage.getItem("jwtToken"),
+      let postData = {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+      };
+      const myFormData = new FormData();
+      myFormData.append("postData", JSON.stringify(postData));
+
+      //-----判斷並傳送資料-----
       if (this.password != this.confirm) {
         alert("Please check your password before you submit");
       } else {
-        this.$store
-          .dispatch("userRegister", {
-            username: this.username,
-            email: this.email,
-            password: this.password,
+        alert("Successfully registered!");
+        this.$axios
+          .post("http://127.0.0.1:8000/api/users/", myFormData)
+          .then((res) => {
+            console.log(res);
+            (this.username = ""),
+              (this.email = ""),
+              (this.password = ""),
+              (this.confirm = "");
+            this.$router.push("/login");
+            console.log(res);
           })
-          .then(() => {
-            this.$router.push({ name: "login" });
-          })
-          .catch((err) => {
-            console.log(err);
-            this.incorrectAuth = true;
+          .catch((error) => {
+            console.log(error);
+            console.log(error.response.request._response);
           });
       }
     },

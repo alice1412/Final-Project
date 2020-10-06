@@ -36,6 +36,8 @@
 <script>
 // @ is an alias to /src
 import NavBar from "@/components/Navbar-Top-New/index.vue";
+import { getAPI } from "../axios-api";
+// import { mapState } from "vuex";
 
 export default {
   name: "Settings",
@@ -43,7 +45,24 @@ export default {
     NavBar,
   },
   computed: {},
-  created() {},
+  // created() {
+  //   getAPI
+  //     .get("/posts/", {
+  //       headers: {
+  //         // Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       // response user 的 username 和 email
+  //       // this.$store.state.模組.狀態 = response.data
+  //       // EX : this.$store.state.user.APIData = response.data;
+  //       this.$store.state.user.APIData = response.data;
+  //       console.log(response.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // },
   data() {
     return {
       form: {
@@ -57,7 +76,21 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       alert(JSON.stringify(this.form));
-      // 以下資料傳到後端
+      getAPI
+        .post("/posts/", {
+          name: this.form.name,
+          email: this.form.email,
+        })
+        .then((response) => {
+          this.form.name = null;
+          this.form.email = null;
+          // this.form.push("response.data");
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // 舊版寫法
       // this.$axios
       //   .post("http://localhost:3000/user-info", {
       //     name: this.form.name,
