@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from user.serializer import UserSerializer, GroupSerializer
+from user.serializer import UserSerializer
+# from user.serializer import UserSerializer, GroupSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -28,7 +29,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 # 允许查看和编辑group的 API endpoint
-class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = (IsAuthenticated,)
+# class GroupViewSet(viewsets.ModelViewSet):
+#     queryset = Group.objects.all()
+#     serializer_class = GroupSerializer
+#     permission_classes = (IsAuthenticated,)

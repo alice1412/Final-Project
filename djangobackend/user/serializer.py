@@ -10,7 +10,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         # password不能省，不然會噴error，就算加了他也不會出現在response中
-        fields = ('id', 'url', 'username','password', 'email', 'groups')
+        # fields = ('id', 'url', 'username','password', 'email', 'groups')
+        fields = ('id', 'url', 'username','password', 'email')
         # fields = '__all__'
 
     def create(self, validated_data):
@@ -36,7 +37,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return instance'''
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ('url', 'name')
+# class GroupSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = Group
+#         fields = ('url', 'name')
