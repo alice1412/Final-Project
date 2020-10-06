@@ -61,7 +61,8 @@
 <script>
 // @ is an alias to /src
 import NavBar from "@/components/Navbar-Top-After/index.vue";
-import Cookies from "js-cookie";
+import { getAPI } from "../axios-api";
+// import Cookies from "js-cookie";
 
 export default {
   name: "Register",
@@ -87,13 +88,13 @@ export default {
     SubmitHandler(evt) {
       evt.preventDefault();
       //   -----封裝將傳出的資料-----
-      let csrftoken = Cookies.get("csrftoken");
-      let axiosConfig = {
-        headers: {
-          "X-CSRFToken": csrftoken,
-          "content-type": "multipart/form-data",
-        },
-      };
+      // let csrftoken = Cookies.get("csrftoken");
+      // let axiosConfig = {
+      //   headers: {
+      //     "X-CSRFToken": csrftoken,
+      //     "content-type": "multipart/form-data",
+      //   },
+      // };
       // "content-type": "application/x-www-form-urlencoded",
       // Authorization: localStorage.getItem("jwtToken"),
       let postData = {
@@ -109,8 +110,8 @@ export default {
         alert("Please check your password before you submit");
       } else {
         alert("Successfully registered!");
-        this.$axios
-          .post("http://127.0.0.1:8000/api/users/", myFormData)
+        getAPI
+          .post("/api/users/", myFormData)
           .then((res) => {
             console.log(res);
             (this.username = ""),
