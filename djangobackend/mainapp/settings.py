@@ -1,6 +1,6 @@
 import os
 
-from corsheaders.defaults import default_headers
+from corsheaders.defaults import default_headers, default_methods
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,7 +15,7 @@ SECRET_KEY = 'o_b*cq5*3^+6$jhhvy9jo=&&ogzg8bm4i-yidc4fp0t9)^luqp'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS=['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -24,11 +24,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     # 'apiapp',
     'mindmap',
     'user',
-    'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
 ]
 
@@ -43,17 +43,48 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW = True
+# CORS_ALLOW_CREDENTIALS = True # cookie
+# CORS_REPLACE_HTTPS_REFERER = True
 
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8081',
-    # 'http://10.10.4.250:8081/',
-    'http://127.0.0.1:8080',
+CORS_ORIGIN_ALLOW_ALL = True # 設true就不須白名單
+# CORS_ORIGIN_ALLOW = True
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:8081',
+#     'http://localhost:8080',
+#     # 'http://10.10.4.250:8081',
+#     'http://127.0.0.1:8080',
+# ]
+
+# CORS_ALLOW_METHODS = ('*')
+CORS_ALLOW_METHODS = (
+    # 'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
 )
 
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'contenttype',
+# CORS_ALLOW_HEADERS = ('*')
+# CORS_ALLOW_HEADERS = list(default_headers) + [
+#     'content-type',
+# ]
+CORS_ALLOW_HEADERS = [
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma',
 ]
+
+CSRF_TRUSTED_ORIGINS = ['localhost:8081']
 
 ROOT_URLCONF = 'mainapp.urls'
 
@@ -107,12 +138,17 @@ STATIC_URL = '/static/'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES':[
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-    ),
-   'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAdminUser'
-   ),
+    ],
+    'DEFAULT_PERMISSION_CLASSES':[
+        # 'rest_framework.permissions.IsAdminUser'
+    ],
+   'DEFAULT_PARSER_CLASSES':[
+       'rest_framework.parsers.JSONParser',
+       'rest_framework.parsers.FormParser',
+       'rest_framework.parsers.MultiPartParser',
+    ]
 }

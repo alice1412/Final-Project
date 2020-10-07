@@ -91,8 +91,8 @@ export default {
       // let csrftoken = Cookies.get("csrftoken");
       // let axiosConfig = {
       //   headers: {
-      //     "X-CSRFToken": csrftoken,
-      //     "content-type": "multipart/form-data",
+      //     // "X-CSRFToken": csrftoken,
+      //     "content-type": "application/json",
       //   },
       // };
       // "content-type": "application/x-www-form-urlencoded",
@@ -111,7 +111,8 @@ export default {
       } else {
         alert("Successfully registered!");
         getAPI
-          .post("/api/users/", myFormData)
+          .post("/api/users/", postData)
+          // .post("/api/users/", myFormData)
           .then((res) => {
             console.log(res);
             (this.username = ""),
