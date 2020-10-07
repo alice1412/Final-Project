@@ -6,7 +6,7 @@ from django.utils import timezone
 class Mindmap(models.Model):
     id = models.AutoField(primary_key=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    describe = models.CharField(max_length=60)
+    describe = models.CharField(max_length=60, null=True, blank=True)
     md_file = models.FileField(upload_to='uploads_md/') # md檔
     json_file = models.FileField(upload_to='uploads_json/') # json檔
     # edit_time = models.DateTimeField(default=timezone.now)

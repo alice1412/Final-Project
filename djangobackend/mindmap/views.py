@@ -77,10 +77,11 @@ class MindmapsViewSet(viewsets.ModelViewSet):
             select_level['h3'] = int(request.POST['H3'])
             select_level['text'] = int(request.POST['Paragraph'])
             do_textsum = int(request.POST['Summary'])
-            describe = request.POST['Describe']
+            # describe = request.POST['Describe']
             md_file = request.FILES['md_file']
 
-            j = Mindmap.objects.create(author=author, describe=describe , md_file=md_file)
+            # j = Mindmap.objects.create(author=author, describe=describe , md_file=md_file)
+            j = Mindmap.objects.create(author=author, describe='' , md_file=md_file)
             j.save() # save後autofield才會計算完
             j_id = j.id
             print('j.id: '+str(j_id))
