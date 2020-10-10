@@ -74,6 +74,7 @@
 </template>
 <script>
 import VNBar from "@/components/Navbar-Top-New/index.vue";
+import { getAPI } from "../axios-api";
 export default {
   name: "mindmapview",
   components: {
@@ -110,9 +111,19 @@ export default {
     };
   },
   mounted() {
-    this.$axios.get("http://localhost:3000/test").then((res) => {
-      this.file = res.data;
-    });
+    getAPI
+      .get("/api/mindmaps/", {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+        },
+      })
+      .then((res) => {
+        this.file = res.data;
+        // this.$store.state.user.APIData = response.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   methods: {
     modalId(i) {

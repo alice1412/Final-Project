@@ -7,8 +7,8 @@ import Logout from './views/Logout'
 import Register from './views/RegisterV2'
 import Convert from './views/Convert'
 import Settings from './views/Settings'
-// import MindMap from './views/MindMap'
-// import MMEdit from './views/MMEdit'
+import MindMap from './views/MindMap'
+import MMEdit from './views/MMEdit'
 
 Vue.use(VueRouter)
 
@@ -57,16 +57,16 @@ export default new VueRouter({
             name: 'settings',
             component: Settings,
         },
-        // {
-        //     path: "/mindmap",
-        //     name: "MindMap",
-        //     component: MindMap,
-        // },
-        // {
-        //     path: "/mmedit/:index",
-        //     name: "MMEdit",
-        //     component: MMEdit,
-        // },
+        {
+            path: "/mindmap",
+            name: "MindMap",
+            component: MindMap,
+        },
+        {
+            path: "/mmedit/:index",
+            name: "MMEdit",
+            component: MMEdit,
+        },
         {
             path: '*',
             redirect: "/"
