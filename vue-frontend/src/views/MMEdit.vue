@@ -143,7 +143,7 @@
         :values="mind"
         :options="options"
         ref="jsMind"
-        height="700px"
+        height="520px"
       ></js-mind>
     </div>
     <Toolkit />
@@ -392,14 +392,13 @@ export default {
 <style scoped>
 .mindmap {
   width: 100%;
-  height: 95vh;
-  padding-top: 100px;
+  height: 100vh;
+  padding-top: 50px;
 }
 .phone-tool {
   display: none;
 }
 .mind {
-  /* padding-top: 100px; */
   z-index: 0;
 }
 .collapsed > .when-open,
