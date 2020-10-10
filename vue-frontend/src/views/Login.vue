@@ -1,18 +1,24 @@
 <template>
   <div>
-    <VBar />
+    <NavBar />
     <div class="login">
       <div class="box p-4">
         <h2>Login</h2>
-        <form action>
-          <div class="form-group" @submit="SubmitHandler">
+        <p v-if="incorrectAuth">
+          Incorrect username or password entered
+          <br />
+          Please try again
+        </p>
+        <form action @submit.prevent="SubmitHandler">
+          <div class="form-group">
             <label for="username">Account :</label>
             <input
               type="text"
               name="username"
-              id="username"
+              id="user"
               class="form-control"
-              v-model="account"
+              v-model="username"
+              placeholder="Username"
             />
           </div>
           <div class="form-group">
@@ -20,16 +26,17 @@
             <input
               type="password"
               name="password"
-              id="password"
+              id="pass"
               class="form-control"
               v-model="password"
+              placeholder="Password"
             />
           </div>
           <input type="submit" value="Submit" class="btn btn-dark" />
         </form>
         <p>
           No account yet?
-          <router-link :to="{ name: 'Register' }">Register Now!</router-link>
+          <router-link :to="{ name: 'register' }">Register Now!</router-link>
         </p>
       </div>
     </div>
@@ -38,49 +45,33 @@
 
 <script>
 // @ is an alias to /src
-import VBar from "@/components/Navbar-Top-After/index.vue";
+import NavBar from "@/components/Navbar-Top-After/index.vue";
 
 export default {
-  name: "Login",
+  name: "login",
   data() {
     return {
       username: "",
       password: "",
+      incorrectAuth: false,
     };
   },
   components: {
-    VBar,
+    NavBar,
   },
-  // 在生成頁面的時候透過此cookie判斷是否為登入狀態
-  // username 為後端傳過來的資料
-  // mounted() {
-  //   let allCookies = document.cookie;
-  //   if (allCookies.indexOf("username") !== -1) {
-  //     this.$router.push("/convert");
-  //   }
-  // },
   methods: {
     SubmitHandler() {
-      // let data = new URLSearchParams();
-      // data.append("username", this.username);
-      // data.append("password", this.password);
-      let postData = {
-        username: this.username,
-        password: this.password,
-      };
-      this.axios
-        .post("http://127.0.0.1:8000/api-token-auth/", postData)
-        .then(function (response) {
-          console.log(response);
-          // alert(response.data.msg);
-          // if (response.data.status === 0) {
-          //   location.href = "/convert";
-          // }
-          window.sessionstorage.setItem("jwt", response.token);
-          this.$router.push("/convert");
+      this.$store
+        .dispatch("userLogin", {
+          username: this.username,
+          password: this.password,
         })
-        .catch(function (error) {
-          console.log(error);
+        .then(() => {
+          this.$router.push({ name: "convert" });
+        })
+        .catch((err) => {
+          console.log(err);
+          this.incorrectAuth = true;
         });
     },
   },

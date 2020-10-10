@@ -1,9 +1,8 @@
 <template>
   <div>
-    <VBar />
+    <NavBar />
     <div class="login">
       <div class="box p-4">
-        <!-- <router-link to="/convert">Convert</router-link> -->
         <h2>Register</h2>
         <form action @submit="SubmitHandler" @reset="ResetHandler">
           <div class="form-group">
@@ -13,7 +12,7 @@
               name="username"
               id="username"
               class="form-control"
-              v-model="form.username"
+              v-model="username"
               required
             />
           </div>
@@ -24,7 +23,7 @@
               name="email"
               id="email"
               class="form-control"
-              v-model="form.email"
+              v-model="email"
               required
             />
           </div>
@@ -35,7 +34,7 @@
               name="password"
               id="password"
               class="form-control"
-              v-model="form.password"
+              v-model="password"
               required
             />
           </div>
@@ -45,7 +44,7 @@
               type="password"
               id="pwd-confirm"
               class="form-control"
-              v-model="form.confirm"
+              v-model="confirm"
               required
             />
           </div>
@@ -61,70 +60,58 @@
 
 <script>
 // @ is an alias to /src
-import VBar from "@/components/Navbar-Top-After/index.vue";
-import Cookies from "js-cookie";
+import NavBar from "@/components/Navbar-Top-After/index.vue";
+import { getAPI } from "../axios-api";
 
 export default {
   name: "Register",
   components: {
-    VBar,
+    NavBar,
   },
   data() {
     return {
-      form: {
-        username: "",
-        email: "",
-        password: "",
-        confirm: "",
-      },
+      username: "",
+      email: "",
+      password: "",
+      confirm: "",
     };
   },
   methods: {
     ResetHandler(evt) {
       evt.preventDefault();
-      (this.form.username = ""),
-        (this.form.email = ""),
-        (this.form.password = ""),
-        (this.form.confirm = "");
+      (this.username = ""),
+        (this.email = ""),
+        (this.password = ""),
+        (this.confirm = "");
     },
     SubmitHandler(evt) {
       evt.preventDefault();
-      let csrftoken = Cookies.get("csrftoken");
-      let axiosConfig = {
-        headers: {
-          "X-CSRFToken": csrftoken,
-          // "content-type": "application/x-www-form-urlencoded",
-          "content-type": "multipart/form-data",
-          // Authorization: localStorage.getItem("jwtToken"),
-        },
-      };
       let postData = {
-        username: this.form.username,
-        email: this.form.email,
-        password: this.form.password,
+        username: this.username,
+        email: this.email,
+        password: this.password,
       };
-
       const myFormData = new FormData();
       myFormData.append("postData", JSON.stringify(postData));
 
+      //-----判斷並傳送資料-----
       if (this.password != this.confirm) {
         alert("Please check your password before you submit");
       } else {
         alert("Successfully registered!");
-        this.$axios
-          .post("http://127.0.0.1:8000/api/users/", myFormData, axiosConfig)
+        getAPI
+          .post("/api/users/", postData)
           .then((res) => {
             console.log(res);
-            (this.form.username = ""),
-              (this.form.email = ""),
-              (this.form.password = ""),
-              (this.form.confirm = "");
+            (this.username = ""),
+              (this.email = ""),
+              (this.password = ""),
+              (this.confirm = "");
             this.$router.push("/login");
             console.log(res);
           })
           .catch((error) => {
             console.log(error);
-            console.log(error.response.request._response);
           });
       }
     },
