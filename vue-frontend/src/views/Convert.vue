@@ -138,7 +138,7 @@ export default {
       // checkStatus: "",
       correct: false,
       variants: ["yes", "no"],
-      // true false
+      // 1 false
       H2: "yes",
       H3: "yes",
       Paragraph: "yes",
@@ -149,26 +149,11 @@ export default {
       bodyTextVariant: "dark",
       footerBgVariant: "light",
       footerTextVariant: "danger",
-      list: [],
     };
   },
   components: {
     VNBar,
   },
-  // created() {
-  //   getAPI
-  //     .get("/api-token/", {
-  //       headers: {
-  //         Authorization: `Bearer ${this.$store.state.user.accessToken}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       this.$store.state.user.APIData = response.data;
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // },
   methods: {
     getFile(event) {
       (this.file = event.target.files[0]), console.log(this.file);
@@ -184,50 +169,57 @@ export default {
       let formData = new FormData();
       formData.append("file", this.file);
 
-      let listData = this.list;
-      let temp = true;
+      let listData = {
+        H2: 1,
+        H3: 1,
+        Paragraph: 1,
+        Summary: 1,
+        md_file: formData,
+      };
       if (this.H2 == "yes") {
-        temp = true;
-        listData.push(temp);
+        listData.H2 = 1;
       } else {
-        temp = false;
-        listData.push(temp);
+        listData.H2 = 0;
       }
       if (this.H3 == "yes") {
-        temp = true;
-        listData.push(temp);
+        listData.H3 = 1;
       } else {
-        temp = false;
-        listData.push(temp);
+        listData.H3 = 0;
       }
       if (this.Paragraph == "yes") {
-        temp = true;
-        listData.push(temp);
+        listData.Paragraph = 1;
       } else {
-        temp = false;
-        listData.push(temp);
+        listData.Paragraph = 0;
       }
       if (this.Summary == "yes") {
-        temp = true;
-        listData.push(temp);
+        listData.Summary = 1;
       } else {
-        temp = false;
-        listData.push(temp);
+        listData.Summary = 0;
       }
       console.log(listData);
 
       let axiosConfig = {
         headers: {
-          Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+          "Content-Type":
+            "multipart/form-data;boundary = " + new Date().getTime(),
         },
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        //   // Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+        // },
+        // transformRequest: [
+        //   function (data) {
+        //     return data;
+        //   },
+        // ],
       };
 
       getAPI
-        .post("/api/mindmaps/", { listData, formData, axiosConfig })
+        .post("/api/mindmaps/", { listData, axiosConfig })
         .then((res) => {
           console.log(res);
-          listData = null;
-          console.log(listData);
+          // listData = null;
+          // console.log(listData);
           this.$router.push("/mindmap");
         })
         .catch((error) => {
