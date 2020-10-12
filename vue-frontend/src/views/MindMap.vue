@@ -12,10 +12,11 @@
           v-for="(item, index) in file"
           :key="item.name"
         >
+          <!-- index -->
           <b-button
             class="content"
             variant="light"
-            :to="{ path: '/mmedit/' + index }"
+            :to="{ path: '/mmedit/' + item.id }"
             style="z-index: 0"
           >
             <h5>{{ item.name }}</h5>
@@ -74,6 +75,9 @@
 </template>
 <script>
 import VNBar from "@/components/Navbar-Top-New/index.vue";
+import { getAPI } from "../axios-api";
+import { mapState } from "vuex";
+
 export default {
   name: "mindmapview",
   components: {
@@ -82,37 +86,36 @@ export default {
   data() {
     return {
       file: [
-        {
-          name: "澳洲銀行業傳將買更多政府債券.md",
-          describe: "新聞",
-        },
         // {
-        //   name: "OB Notes.md",
-        //   describe: "CH1",
-        // },
-        // {
-        //   name: "電商技術.md",
-        //   describe: "CH8",
-        // },
-        // {
-        //   name: "購物車.md",
-        //   describe: "架構設計",
-        // },
-        // {
-        //   name: "電商技術.md",
-        //   describe: "CH10",
-        // },
-        // {
-        //   name: "Example6.md",
-        //   describe: "adad",
+        //   name: "澳洲銀行業傳將買更多政府債券.md",
+        //   describe: "新聞",
         // },
       ],
     };
   },
-  mounted() {
-    this.$axios.get("http://localhost:3000/test").then((res) => {
-      this.file = res.data;
-    });
+  computed: {
+    ...mapState({
+      APIFile: (state) => state.user.APIFile,
+    }),
+  },
+  created() {
+    getAPI
+      .get("/api/mindmaps/", {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+        },
+      })
+      .then((response) => {
+        // this.$store.state.user.APIData = response.data;
+        // this.file = response.data;
+        this.$store.state.user.APIFile = response.data;
+        this.file = this.$store.state.user.APIFile;
+        console.log(response.data);
+        // console.log(response.data[0].name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   methods: {
     modalId(i) {
@@ -124,28 +127,27 @@ export default {
     save(index) {
       // alert(this.file[this.file.indexOf(item)].describe);
       let target = this.file[index];
-      this.$axios
-        .patch("http://localhost:3000/test" + "/" + target.id, {
+      console.log(target.id);
+
+      getAPI
+        .patch("/api/mindmaps/" + target.id, {
           describe: target.describe,
         })
         .then((res) => {
           console.log(res.data);
-          this.$router.go("/mindmap");
+          // this.$router.go("/mindmap");
         });
     },
     removeItem: function (index) {
       // this.file.splice(this.file.indexOf(item), 1);
       // console.log(index);
       let target = this.file[index];
-      this.$axios
-        .delete("http://localhost:3000/test" + "/" + target.id)
-        .then((res) => {
-          console.log(res);
-          this.file.splice(index, 1);
-        });
+      getAPI.delete("/api/mindmaps/" + target.id).then((res) => {
+        console.log(res);
+        this.file.splice(index, 1);
+      });
     },
   },
-  computed: {},
 };
 </script>
 <style scoped>

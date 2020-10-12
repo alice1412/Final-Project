@@ -91,9 +91,6 @@ export default {
         email: this.email,
         password: this.password,
       };
-      const myFormData = new FormData();
-      myFormData.append("postData", JSON.stringify(postData));
-
       //-----判斷並傳送資料-----
       if (this.password != this.confirm) {
         alert("Please check your password before you submit");

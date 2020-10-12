@@ -116,7 +116,7 @@
             >Add Node</b-button
           >
           <b-button squared variant="outline-secondary" @click="saveLocalFile"
-            >Save as PDF</b-button
+            >Save</b-button
           >
           <b-button squared variant="outline-secondary" @click="screenshot"
             >Save as images</b-button
@@ -152,9 +152,11 @@
 
 <script>
 // @ is an alias to /src
-import MY_JSON from "./0915_test4.json";
+// import MY_JSON from "./0915_test4.json";
 import VNBar from "@/components/Navbar-Top-New/index.vue";
 import Toolkit from "@/components/Toolkit/index.vue";
+import { getAPI } from "../axios-api";
+import { mapState } from "vuex";
 
 export default {
   name: "mindmap",
@@ -162,10 +164,33 @@ export default {
     VNBar,
     Toolkit,
   },
+  computed: {
+    ...mapState({
+      MindMap: (state) => state.user.MindMap,
+    }),
+  },
+  // " + id + "
+  created() {
+    getAPI
+      .get("/api/mindmaps/3/edit", {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+        },
+      })
+      .then((response) => {
+        this.$store.state.user.MindMap = response.data;
+        this.mind = this.$store.state.user.MindMap.json;
+        console.log(response.data);
+        // console.log(this.$store.state.user.MindMap.json);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   data() {
     return {
       theme_value: "",
-      mind: MY_JSON,
+      mind,
       options: {
         view: {
           line_width: 1, // 思维导图线条的粗细
@@ -292,6 +317,14 @@ export default {
       console.log(mind_str);
       // jsMind.util.file.save(mind_str, "text/jsmind", mind_name + ".json");
       // 這裡改成將資料傳到後端
+      getAPI
+        .patch("/api/mindmaps/" + id + "/save/", { mind_str })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     fontSize() {
       var selected_id = this.get_selected_nodeid();

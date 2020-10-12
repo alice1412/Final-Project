@@ -128,6 +128,8 @@
 
 <script>
 import VNBar from "@/components/Navbar-Top-New/index.vue";
+import { getAPI } from "../axios-api";
+
 export default {
   name: "convert",
   data() {
@@ -147,11 +149,26 @@ export default {
       bodyTextVariant: "dark",
       footerBgVariant: "light",
       footerTextVariant: "danger",
+      list: [],
     };
   },
   components: {
     VNBar,
   },
+  // created() {
+  //   getAPI
+  //     .get("/api-token/", {
+  //       headers: {
+  //         Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       this.$store.state.user.APIData = response.data;
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // },
   methods: {
     getFile(event) {
       (this.file = event.target.files[0]), console.log(this.file);
@@ -162,45 +179,55 @@ export default {
       return (this.$data.correct = false);
     },
     submitForm(event) {
-      // event.preventDefault();
+      event.preventDefault();
+
       let formData = new FormData();
       formData.append("file", this.file);
-      let config = {
+
+      let listData = this.list;
+      let temp = true;
+      if (this.H2 == "yes") {
+        temp = true;
+        listData.push(temp);
+      } else {
+        temp = false;
+        listData.push(temp);
+      }
+      if (this.H3 == "yes") {
+        temp = true;
+        listData.push(temp);
+      } else {
+        temp = false;
+        listData.push(temp);
+      }
+      if (this.Paragraph == "yes") {
+        temp = true;
+        listData.push(temp);
+      } else {
+        temp = false;
+        listData.push(temp);
+      }
+      if (this.Summary == "yes") {
+        temp = true;
+        listData.push(temp);
+      } else {
+        temp = false;
+        listData.push(temp);
+      }
+      console.log(listData);
+
+      let axiosConfig = {
         headers: {
-          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${this.$store.state.user.accessToken}`,
         },
       };
 
-      // 创建一个空的axios 对象
-      const instance = this.$axios.create({
-        withCredentials: true, // 如果发送请求的时候需要带上token 验证之类的也可以写在这个对象里
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // instance
-      //   .post("http://127.0.0.1:8000/fileUpload/upload/", formData)
-      //   .then((res) => {
-      //     if (res.data.code === 200) {
-      //       alert(res.data.msg);
-      //       this.checkStatus = res.data;
-      //     } else if (res.data.code === 2) {
-      //       alert(res.data.msg);
-      //     } else {
-      //       alert(res.data.msg);
-      //     }
-      //   });
-
-      this.$axios
-        .post("http://localhost:3000/posts", {
-          H2: this.H2,
-          H3: this.H3,
-          Paragraph: this.Paragraph,
-          Summary: this.Summary,
-        })
+      getAPI
+        .post("/api/mindmaps/", { listData, formData, axiosConfig })
         .then((res) => {
           console.log(res);
+          listData = null;
+          console.log(listData);
           this.$router.push("/mindmap");
         })
         .catch((error) => {
