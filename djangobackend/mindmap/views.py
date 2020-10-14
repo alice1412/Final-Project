@@ -66,6 +66,26 @@ class MindmapsViewSet(viewsets.ModelViewSet):
         }
         return Response(result, status=status.HTTP_200_OK)
 
+    # 修改description
+    # http://127.0.0.1:8000/api/mindmaps/{id}/describe
+    @action(detail=True, methods=['patch'])
+    def describe(self, request, pk=None):
+        print(request.user)
+        print(request.data['describe'])
+        mm = get_object_or_404(Mindmap, pk=pk, author = request.user)
+        try:
+            mm.describe = request.data['describe']
+            mm.save()
+        except:
+            print('error')
+            return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        result = { # ''內是response中的欄位名、mm.?要看model中設定的欄位名
+            'id': mm.id,
+            # 'json': mm.json_file,
+            'describe': mm.describe
+        }
+        return Response(result, status=status.HTTP_200_OK)
+
     # POST，回傳JSON
     def create(self, validated_data):
         try:
