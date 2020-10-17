@@ -149,6 +149,7 @@ export default {
       bodyTextVariant: "dark",
       footerBgVariant: "light",
       footerTextVariant: "danger",
+      list: [],
     };
   },
   components: {
@@ -166,16 +167,20 @@ export default {
     submitForm(event) {
       event.preventDefault();
 
-      let formData = new FormData();
-      formData.append("file", this.file);
+      // let formData = new FormData();
+      // formData.append("file", this.file);
+      // this.list = formData;
 
       let listData = {
         H2: 1,
         H3: 1,
         Paragraph: 1,
         Summary: 1,
-        md_file: formData,
+        md_file: this.file,
       };
+
+      // let md_file = this.file;
+
       if (this.H2 == "yes") {
         listData.H2 = 1;
       } else {
@@ -198,24 +203,24 @@ export default {
       }
       console.log(listData);
 
-      let axiosConfig = {
-        headers: {
-          "Content-Type":
-            "multipart/form-data;boundary = " + new Date().getTime(),
-        },
-        // headers: {
-        //   "Content-Type": "multipart/form-data",
-        //   // Authorization: `Bearer ${this.$store.state.user.accessToken}`,
-        // },
-        // transformRequest: [
-        //   function (data) {
-        //     return data;
-        //   },
-        // ],
-      };
+      // let axiosConfig = {
+      //   headers: {
+      //     "Content-Type":
+      //       "multipart/form-data;boundary = " + new Date().getTime(),
+      //   },
+      //   // headers: {
+      //   //   "Content-Type": "multipart/form-data",
+      //   //   // Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+      //   // },
+      //   // transformRequest: [
+      //   //   function (data) {
+      //   //     return data;
+      //   //   },
+      //   // ],
+      // };
 
       getAPI
-        .post("/api/mindmaps/", { listData, axiosConfig })
+        .post("/api/mindmaps/", { listData })
         .then((res) => {
           console.log(res);
           // listData = null;

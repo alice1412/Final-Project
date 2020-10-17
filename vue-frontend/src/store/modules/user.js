@@ -6,7 +6,7 @@ const state = {
     accessToken: null,
     refreshToken: null,
     APIFile:'',
-    MindMap:''
+    MindMap: null
 }
 
 const getters = {
