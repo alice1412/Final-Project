@@ -1,6 +1,7 @@
 import os
 
 from corsheaders.defaults import default_headers, default_methods
+from datetime import timedelta
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -57,7 +58,7 @@ CORS_ORIGIN_ALLOW_ALL = True # 設true就不須白名單
 
 # CORS_ALLOW_METHODS = ('*')
 CORS_ALLOW_METHODS = (
-    # 'DELETE',
+    'DELETE',
     'GET',
     'OPTIONS',
     'PATCH',
@@ -151,4 +152,8 @@ REST_FRAMEWORK = {
        'rest_framework.parsers.FormParser',
        'rest_framework.parsers.MultiPartParser',
     ]
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
 }

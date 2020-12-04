@@ -247,7 +247,7 @@ export default {
   // " + id + "
   created() {
     getAPI
-      .get("/api/mindmaps/3/edit", {
+      .get("/api/mindmaps/8/edit", {
         headers: {
           Authorization: `Bearer ${this.$store.state.user.accessToken}`,
         },
