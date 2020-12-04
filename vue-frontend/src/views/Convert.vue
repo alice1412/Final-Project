@@ -117,9 +117,10 @@
           block
           variant="outline-danger"
           class="mt-3 w-100"
-          @click="submitForm($event)"
+          to="/mindmap"
           >Convert</b-button
         >
+        <!-- @click="submitForm($event)" -->
       </b-modal>
       <!-- {{ checkStatus }} -->
     </form>
@@ -219,8 +220,19 @@ export default {
       //   // ],
       // };
 
+      // getAPI.get("/api/mindmaps/", {
+      //   headers: {
+      //     Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+      //   },
+      // });
+
       getAPI
-        .post("/api/mindmaps/", { listData })
+        .post("/api/mindmaps/", {
+          listData,
+          headers: {
+            Authorization: `Bearer ${this.$store.state.user.accessToken}`,
+          },
+        })
         .then((res) => {
           console.log(res);
           // listData = null;

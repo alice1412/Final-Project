@@ -256,8 +256,8 @@ export default {
         this.$store.state.user.MindMap = response.data;
         // test = response.data.json;
         test = this.$store.state.user.MindMap.json;
-        // console.log(response.data);
-        console.log(test);
+        console.log(response.data);
+        // console.log(test);
       })
       .catch((err) => {
         console.log(err);
